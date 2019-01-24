@@ -21,7 +21,7 @@ public class ActivityMainThread extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_thread);
+        setContentView(R.layout.activity_threads);
 
         textView = findViewById(R.id.textView);
         editText = findViewById(R.id.editText);

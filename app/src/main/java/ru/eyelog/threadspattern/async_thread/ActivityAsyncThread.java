@@ -18,7 +18,7 @@ public class ActivityAsyncThread extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_async_thread);
+        setContentView(R.layout.activity_threads);
 
         textView = findViewById(R.id.textView);
         editText = findViewById(R.id.editText);

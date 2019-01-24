@@ -1,4 +1,4 @@
-package ru.eyelog.threadspattern.side_thread;
+package ru.eyelog.threadspattern.multi_side_thread;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import ru.eyelog.threadspattern.R;
 
-public class ActivitySideThread extends AppCompatActivity {
+public class ActivityMultiThread extends AppCompatActivity {
 
     TextView textView;
     EditText editText;
     Button button;
+
+    Thread thread[] = new Thread[3];
 
     private int a = 0;
     private int steps = 0;
@@ -25,6 +27,7 @@ public class ActivitySideThread extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_threads);
 
         textView = findViewById(R.id.textView);
@@ -33,18 +36,24 @@ public class ActivitySideThread extends AppCompatActivity {
 
         button.setOnClickListener(v -> {
             steps = Integer.parseInt(editText.getText().toString());
-            Thread thread = new Thread(new CustomRunnable(steps));
 
-            // Так запускается сторонний поток
-            thread.start();
+            // Несинхронные потоки неполедовательны
+            for (int i = 0; i < 3; i++) {
+//                thread[i] = new Thread(new CustomRunnable(steps * i));
+//                thread[i].start();
+                startThread(i, steps);
+            }
 
-            // Так запускается основной поток
-            // thread.run();
         });
     }
 
+    synchronized void startThread(int i, int steps){
+        thread[i] = new Thread(new CustomRunnable(steps * i));
+        thread[i].start();
+    }
+
     @SuppressLint("HandlerLeak")
-    class CustomHandler extends Handler{
+    class CustomHandler extends Handler {
         @Override
         public void handleMessage(Message message) {
             Bundle bundle = message.getData();

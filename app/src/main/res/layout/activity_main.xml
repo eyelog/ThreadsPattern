@@ -24,6 +24,13 @@
         android:text="Side thread" />
 
     <Button
+        android:id="@+id/btSideMultiThread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Side multi thread" />
+
+    <Button
         android:id="@+id/btAsyncThread"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

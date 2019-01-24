@@ -19,6 +19,7 @@
         <activity android:name=".main_thread.ActivityMainThread"/>
         <activity android:name=".side_thread.ActivitySideThread"/>
         <activity android:name=".async_thread.ActivityAsyncThread"/>
+        <activity android:name=".multi_side_thread.ActivityMultiThread"/>
         <activity android:name=".rx_thread.ActivityRxThread"/>
     </application>
 
