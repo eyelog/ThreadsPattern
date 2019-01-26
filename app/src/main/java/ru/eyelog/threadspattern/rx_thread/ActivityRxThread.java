@@ -7,13 +7,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import ru.eyelog.threadspattern.R;
 
 public class ActivityRxThread extends AppCompatActivity {
 
+    Integer a = 0;
+
     TextView textView;
     EditText editText;
     Button button;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,8 +34,43 @@ public class ActivityRxThread extends AppCompatActivity {
         button = findViewById(R.id.button);
 
         button.setOnClickListener(v -> {
-            textView.setText(editText.getText());
+            int val = Integer.parseInt(editText.getText().toString());
+
+            List<Integer> values = new ArrayList<>();
+            for (int i = 0; i < val; i++) {
+                values.add(i);
+            }
+
+            Observable<Integer> observable = Observable.fromArray(0, 1, 2, 3, 4);
+
+            Observer<Integer> observer = new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                }
+
+                @Override
+                public void onNext(Integer integer) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    textView.setText(String.valueOf(integer));
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                }
+
+                @Override
+                public void onComplete() {
+                    //textView.setText(a + " расчёт окончен");
+                }
+            };
+
+            observable.subscribe(observer);
         });
 
     }
+
 }
