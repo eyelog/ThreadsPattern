@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:inputType="number"/>
 
     <Button
         android:id="@+id/button"

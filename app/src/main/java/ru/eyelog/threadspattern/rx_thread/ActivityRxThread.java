@@ -1,31 +1,27 @@
 package ru.eyelog.threadspattern.rx_thread;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.eyelog.threadspattern.R;
 
 public class ActivityRxThread extends AppCompatActivity {
-
-    Integer a = 0;
 
     TextView textView;
     EditText editText;
     Button button;
 
+    int a = 0;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_threads);
 
@@ -34,43 +30,45 @@ public class ActivityRxThread extends AppCompatActivity {
         button = findViewById(R.id.button);
 
         button.setOnClickListener(v -> {
-            int val = Integer.parseInt(editText.getText().toString());
 
-            List<Integer> values = new ArrayList<>();
-            for (int i = 0; i < val; i++) {
-                values.add(i);
-            }
+            int steps = Integer.parseInt(editText.getText().toString());
 
-            Observable<Integer> observable = Observable.fromArray(0, 1, 2, 3, 4);
+            Observable<String> observable = Observable.create(emitter -> {
 
-            Observer<Integer> observer = new Observer<Integer>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                }
-
-                @Override
-                public void onNext(Integer integer) {
+                for (int i = 0; i < steps; i++) {
+                    a++;
+                    Log.i("Logcat", "a = " + a);
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    textView.setText(String.valueOf(integer));
+
+                    // Полылка подписчику со следующим шагом
+                    emitter.onNext(String.valueOf(a));
                 }
 
-                @Override
-                public void onError(Throwable e) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-                @Override
-                public void onComplete() {
-                    //textView.setText(a + " расчёт окончен");
-                }
-            };
+                // Сигнал подписчику о завершении работы потока.
+                emitter.onComplete();
 
-            observable.subscribe(observer);
+            });
+
+            observable.subscribeOn(Schedulers.computation())
+                    // Работаем в фоновом потоке.
+                    .subscribeOn(Schedulers.io())
+                    // Результаты обрабатываем в основном потоке
+                    .observeOn(AndroidSchedulers.mainThread())
+                    // Команда которая принимает посылки от onNext()
+                    .doOnSubscribe(disposable -> textView.setText("Start counting"))
+                    // Команда которая принимает сигналы от onComplete()
+                    .doAfterTerminate(() -> textView.setText("Counted to " + a))
+                    .subscribe(s -> textView.setText(s));
         });
-
     }
-
 }
