@@ -44,4 +44,12 @@
         android:layout_margin="10dp"
         android:text="Rx thread with create (bad way)" />
 
+
+    <Button
+        android:id="@+id/btRxMVPThread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Rx thread with MVP (Rotation)" />
+
 </LinearLayout>

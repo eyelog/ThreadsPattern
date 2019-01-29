@@ -8,12 +8,14 @@ import android.widget.Button;
 import ru.eyelog.threadspattern.async_thread.ActivityAsyncThread;
 import ru.eyelog.threadspattern.main_thread.ActivityMainThread;
 import ru.eyelog.threadspattern.multi_side_thread.ActivityMultiThread;
+import ru.eyelog.threadspattern.rx_mvp_thread.ActivityRxMVPThread;
 import ru.eyelog.threadspattern.rx_thread.ActivityRxThread;
 import ru.eyelog.threadspattern.side_thread.ActivitySideThread;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btMainThread, btSideThread, btSideMultiThread, btAsyncThread, btRxThread;
+    Button btMainThread, btSideThread, btSideMultiThread,
+            btAsyncThread, btRxThread, btRxMVPThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
         btSideMultiThread = findViewById(R.id.btSideMultiThread);
         btAsyncThread = findViewById(R.id.btAsyncThread);
         btRxThread = findViewById(R.id.btRxThread);
+        btRxMVPThread = findViewById(R.id.btRxMVPThread);
 
         btMainThread.setOnClickListener(v -> startActivity(new Intent(this, ActivityMainThread.class)));
         btSideThread.setOnClickListener(v -> startActivity(new Intent(this, ActivitySideThread.class)));
         btSideMultiThread.setOnClickListener(v -> startActivity(new Intent(this, ActivityMultiThread.class)));
         btAsyncThread.setOnClickListener(v -> startActivity(new Intent(this, ActivityAsyncThread.class)));
         btRxThread.setOnClickListener(v -> startActivity(new Intent(this, ActivityRxThread.class)));
+        btRxMVPThread.setOnClickListener(v -> startActivity(new Intent(this, ActivityRxMVPThread.class)));
     }
 }
