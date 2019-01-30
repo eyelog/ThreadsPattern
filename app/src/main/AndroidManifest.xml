@@ -22,6 +22,7 @@
         <activity android:name=".multi_side_thread.ActivityMultiThread"/>
         <activity android:name=".rx_thread.ActivityRxThread"/>
         <activity android:name=".rx_mvp_thread.ActivityRxMVPThread"/>
+        <activity android:name=".rx_concat.ActivityRxConcatThread"/>
     </application>
 
 </manifest>
